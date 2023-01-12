@@ -129,6 +129,8 @@
   <ItemGroup>
     <ClCompile Include="DumpProcesses.cpp" />
     <ClCompile Include="Privs.cpp" />
+    <ClCompile Include="Sid.cpp" />
+    <ClCompile Include="Token.cpp" />
     <ClCompile Include="TokenDumper.cpp" />
   </ItemGroup>
   <ItemGroup>

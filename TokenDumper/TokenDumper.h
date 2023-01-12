@@ -16,13 +16,16 @@
 #include <memory>
 #include <vector>
 
-void    ShowApiError(__in_z const wchar_t* wszError);
-HRESULT IsLinkedToken(const HANDLE hToken, __inout HANDLE* pLinkedToken, bool* fIsLinked);
-void    DumpHighLevelStuff(const HANDLE hToken);
+void    ShowApiError(_In_z_ const wchar_t* wszError);
+HRESULT IsLinkedToken(const HANDLE hToken, _Inout_ HANDLE* pLinkedToken, _Inout_ bool* fIsLinked);
+void    DumpUsernameAndSid(const HANDLE hToken);
 void    DumpGroups(const HANDLE hToken);
 void    DumpPrivs(const HANDLE hToken);
 void    DumpToken(const HANDLE hToken);
 HANDLE  HandleLinkedToken(const HANDLE hToken);
-void    ShowSid(__in PSID psid, const DWORD attr);
+void    ShowSid(_In_ PSID psid, const DWORD attr);
 void    ShowPrivilege(LUID_AND_ATTRIBUTES& pPriv);
 void	DumpProcesses();
+void	GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout_* pcbSize, _Inout_ void** ppv);
+void	SetTextColor(WORD dwColor);
+bool	IsDangerousPriv(LPWSTR szPrivName);

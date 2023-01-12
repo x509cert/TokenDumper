@@ -3,24 +3,45 @@
 ////////////////////////////////////////////////////////////////////
 void DumpPrivs(const HANDLE hToken) {
     DWORD bufferSize = 0;
-    GetTokenInformation(hToken, TokenPrivileges, nullptr, 0, &bufferSize);
+    PVOID ppv{};
 
-    std::vector<BYTE> buffer(bufferSize);
-    PTOKEN_PRIVILEGES privileges = reinterpret_cast<PTOKEN_PRIVILEGES>(buffer.data());
+	GetTokenInfo(hToken, TokenPrivileges, &bufferSize, &ppv);
+    if (!ppv) return; //todo
+	
+    PTOKEN_PRIVILEGES privileges = reinterpret_cast<PTOKEN_PRIVILEGES>(ppv);
 
-    if (!GetTokenInformation(hToken, TokenPrivileges, privileges, bufferSize, &bufferSize)) {
-        _tprintf(_T("GetTokenInformation failed with error code %u\n"), GetLastError());
-        return;
-    }
-
-    _tprintf(_T("Token privileges:\n"));
+    _tprintf(_T("Token privileges {n=%d}:\n"), privileges->PrivilegeCount);
     for (DWORD i = 0; i < privileges->PrivilegeCount; ++i) {
-        LPTSTR privilegeName;
+        LPWSTR privilegeName{};
         DWORD nameSize = 0;
+        
         LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, NULL, &nameSize);
         privilegeName = new TCHAR[nameSize];
+        
         LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, privilegeName, &nameSize);
+		if (IsDangerousPriv(privilegeName))
+            SetTextColor(FOREGROUND_RED);
+		
         _tprintf(_T("  %s\n"), privilegeName);
+		
+        SetTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+        
         delete[] privilegeName;
     }
+}
+
+void SetTextColor(WORD dwColor) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, dwColor);
+}
+
+bool IsDangerousPriv(LPWSTR szPrivName) {
+	const wchar_t *szDanergousPrivs[] = { SE_BACKUP_NAME, SE_RESTORE_NAME, SE_TCB_NAME, SE_TAKE_OWNERSHIP_NAME,
+                                           SE_DEBUG_NAME, SE_IMPERSONATE_NAME,  SE_CREATE_GLOBAL_NAME, SE_CREATE_TOKEN_NAME,
+                                           SE_SECURITY_NAME, SE_RELABEL_NAME, SE_LOAD_DRIVER_NAME, SE_SYSTEMTIME_NAME, SE_RELABEL_NAME };
+    for (int i = 0; i < sizeof(szDanergousPrivs) / sizeof(szDanergousPrivs[0]); i++) {
+		if (wcscmp(szPrivName, szDanergousPrivs[i]) == 0) return true;
+    }
+
+    return false;
 }
