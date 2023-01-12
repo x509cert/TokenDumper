@@ -16,6 +16,7 @@ void DumpProcesses() {
 	
 	std::vector<std::wstring> vProcessNames;
 
+    SetTextColor();
     wprintf(L"PROCESSES:\n");
     do {
         wchar_t wszProc[128];

@@ -10,6 +10,7 @@ void DumpPrivs(const HANDLE hToken) {
 	
     PTOKEN_PRIVILEGES privileges = reinterpret_cast<PTOKEN_PRIVILEGES>(ppv);
 
+    SetTextColor();
     wprintf(L"\nPRIVILEGES {n=%d}:\n", privileges->PrivilegeCount);
     for (DWORD i = 0; i < privileges->PrivilegeCount; ++i) {
         LPWSTR privilegeName{};
@@ -24,7 +25,7 @@ void DumpPrivs(const HANDLE hToken) {
 		
         wprintf(L"\t%s\n", privilegeName);
 		
-        SetTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+        SetTextColor();
         
         delete[] privilegeName;
     }

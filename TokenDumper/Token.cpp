@@ -7,6 +7,7 @@ void DumpGroups(const HANDLE hToken) {
 	DWORD cbNeeded{};
 	GetTokenInfo(hToken, TokenGroups, &cbNeeded, reinterpret_cast<void**>(&ptg));
 
+	SetTextColor();
 	wprintf(L"\nGROUPS {n=%d}:\n", ptg->GroupCount);
 	if (ptg->GroupCount == 0)
 		wprintf(L"\tNone");

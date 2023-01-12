@@ -29,7 +29,7 @@ HANDLE  HandleLinkedToken(const HANDLE hToken);
 void    ShowSid(_In_ PSID psid, const DWORD attr);
 void	DumpProcesses();
 void	GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout_* pcbSize, _Inout_ void** ppv);
-void	SetTextColor(WORD dwColor);
+void	SetTextColor(WORD dwColor = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 bool	IsDangerousPriv(LPWSTR szPrivName);
 void	Usage();
 void	GetProcessNameFromPid(DWORD pid);

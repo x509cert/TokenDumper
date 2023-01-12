@@ -91,7 +91,7 @@ void ShowSid(_In_ PSID pSid, const DWORD attr) {
     if (IsDangerousGroupOrLabel(pSid, attr))
         SetTextColor(FOREGROUND_RED);
     else
-        SetTextColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+        SetTextColor();
 
     wprintf(L"\t%ls%ls%ls (%ls)%ls%ls",
         domain,

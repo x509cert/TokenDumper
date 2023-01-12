@@ -39,6 +39,7 @@ void DumpProcessName(DWORD pid) {
 	wchar_t wszProcessName[MAX_PATH];
 	DWORD chProcessName = _countof(wszProcessName);
 	GetProcessNameFromPid(pid, wszProcessName, chProcessName);
+	SetTextColor();
 	wprintf(L"PROCESS:\n");
 	wprintf(L"\t%s\n", wszProcessName);
 }
