@@ -3,21 +3,32 @@
 void DumpProcesses() {
     HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) {
-        _tprintf(_T("CreateToolhelp32Snapshot failed with error code %d\n"), GetLastError());
+        wprintf(L"CreateToolhelp32Snapshot failed with error code %d\n", GetLastError());
         return;
     }
 
     PROCESSENTRY32 pe = { sizeof(pe) };
     if (!Process32First(hSnapshot, &pe)) {
-        _tprintf(_T("Process32First failed with error code %d\n"), GetLastError());
+        wprintf(L"Process32First failed with error code %d\n", GetLastError());
         CloseHandle(hSnapshot);
         return;
     }
+	
+	std::vector<std::wstring> vProcessNames;
 
-    _tprintf(_T("Processes:\n"));
+    wprintf(L"PROCESSES:\n");
     do {
-        _tprintf(_T("  %s (%d)\n"), pe.szExeFile, pe.th32ProcessID);
+        wchar_t wszProc[128];
+        swprintf_s(wszProc, _countof(wszProc), L"%s (%d)", pe.szExeFile, pe.th32ProcessID);
+		std::wstring strProcName = wszProc;
+		std::transform(strProcName.begin(), strProcName.end(), strProcName.begin(), ::tolower);
+        vProcessNames.push_back(strProcName);
     } while (Process32Next(hSnapshot, &pe));
+	
+	std::sort(vProcessNames.begin(), vProcessNames.end());
+    for (auto& s : vProcessNames) {
+		wprintf(L"%s\n", s.c_str());
+    }
 
     CloseHandle(hSnapshot);
 }

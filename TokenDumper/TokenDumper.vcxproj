@@ -132,6 +132,7 @@
     <ClCompile Include="Sid.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="TokenDumper.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TokenDumper.h" />

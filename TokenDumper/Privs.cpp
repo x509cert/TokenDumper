@@ -10,7 +10,7 @@ void DumpPrivs(const HANDLE hToken) {
 	
     PTOKEN_PRIVILEGES privileges = reinterpret_cast<PTOKEN_PRIVILEGES>(ppv);
 
-    _tprintf(_T("Token privileges {n=%d}:\n"), privileges->PrivilegeCount);
+    wprintf(L"\nPRIVILEGES {n=%d}:\n", privileges->PrivilegeCount);
     for (DWORD i = 0; i < privileges->PrivilegeCount; ++i) {
         LPWSTR privilegeName{};
         DWORD nameSize = 0;
@@ -22,17 +22,12 @@ void DumpPrivs(const HANDLE hToken) {
 		if (IsDangerousPriv(privilegeName))
             SetTextColor(FOREGROUND_RED);
 		
-        _tprintf(_T("  %s\n"), privilegeName);
+        wprintf(L"\t%s\n", privilegeName);
 		
         SetTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
         
         delete[] privilegeName;
     }
-}
-
-void SetTextColor(WORD dwColor) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, dwColor);
 }
 
 bool IsDangerousPriv(LPWSTR szPrivName) {

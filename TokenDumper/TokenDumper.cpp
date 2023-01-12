@@ -1,62 +1,11 @@
 #include "TokenDumper.h"
 
 ////////////////////////////////////////////////////////////////////
-void DumpUsernameAndSid(const HANDLE hToken) {
-    DWORD dwUser = 0;
-    TOKEN_USER* ptu{};
-    
-    GetTokenInfo(hToken, TokenUser, &dwUser, reinterpret_cast<void**>(&ptu));
-    if (dwUser > 0) {
-        ShowSid(ptu->User.Sid, ptu->User.Attributes);
-    }
-    else {
-        ShowApiError(L"GetTokenInformation");
-    }
-
-    if (&ptu)
-        LocalFree(&ptu);
-
-    // Restricted
-
-}
-
-////////////////////////////////////////////////////////////////////
-void DumpGroups(const HANDLE hToken) {
-
-    TOKEN_GROUPS* ptg{};
-    DWORD cbNeeded = 2000;
-	GetTokenInfo(hToken, TokenGroups, &cbNeeded, reinterpret_cast<void**>(&ptg));
-
-    wprintf(L"Number of groups: %d\n", ptg->GroupCount);
-    if (ptg->GroupCount == 0)
-        wprintf(L"None");
-    else {
-        for (size_t i = 0; i < ptg->GroupCount; i++) {
-            ShowSid(ptg->Groups[i].Sid, ptg->Groups[i].Attributes);
-        }
-    }
-
-	if (ptg) free(ptg);
-}
-
-////////////////////////////////////////////////////////////////////
-void DumpToken(const HANDLE hToken) {
+void DumpToken(const HANDLE hToken, DWORD pid) {
+    DumpProcessName(pid);
     DumpUsernameAndSid(hToken);
-    //DumpGroups(hToken);
+    DumpGroups(hToken);
     DumpPrivs(hToken);
-}
-
-////////////////////////////////////////////////////////////////////
-void ShowApiError(__in_z const wchar_t* wszError) {
-    wprintf(L"%ls failed. Error = %d", wszError, GetLastError());
-}
-
-void Usage() {
-    wprintf(L"TokenDumper V0.1 - Michael Howard.\nCopyright (c) Microsoft Corp. All Rights Reserved.\n");
-    wprintf(L"Usage: TokenDumper [-p <pid>] [-l] [-h]\n");
-    wprintf(L"\t-p <pid>\tProcess ID to dump token for\n");
-    wprintf(L"\t-l\t\tList all processes\n");
-    wprintf(L"\t-h\t\tThis help\n");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -99,7 +48,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
         return -1;
     }
 
-    DumpToken(hToken);
+    DumpToken(hToken, pid);
     HANDLE hLinkedToken = HandleLinkedToken(hToken);
     //if (hLinkedToken)             // we only care about the main token
     //    DumpToken(hLinkedToken);

@@ -12,20 +12,25 @@
 #include "windows.h"
 #include "sddl.h"
 #include <tlhelp32.h>
+#include <psapi.h>
 
 #include <memory>
 #include <vector>
+#include <string>
+#include <algorithm>
 
 void    ShowApiError(_In_z_ const wchar_t* wszError);
-HRESULT IsLinkedToken(const HANDLE hToken, _Inout_ HANDLE* pLinkedToken, _Inout_ bool* fIsLinked);
+bool	IsLinkedToken(const HANDLE hToken, _Inout_ HANDLE* pLinkedToken);
 void    DumpUsernameAndSid(const HANDLE hToken);
 void    DumpGroups(const HANDLE hToken);
 void    DumpPrivs(const HANDLE hToken);
 void    DumpToken(const HANDLE hToken);
 HANDLE  HandleLinkedToken(const HANDLE hToken);
 void    ShowSid(_In_ PSID psid, const DWORD attr);
-void    ShowPrivilege(LUID_AND_ATTRIBUTES& pPriv);
 void	DumpProcesses();
 void	GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout_* pcbSize, _Inout_ void** ppv);
 void	SetTextColor(WORD dwColor);
 bool	IsDangerousPriv(LPWSTR szPrivName);
+void	Usage();
+void	GetProcessNameFromPid(DWORD pid);
+void	DumpProcessName(DWORD pid);
