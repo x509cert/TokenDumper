@@ -7,7 +7,7 @@ void ShowApiError(__in_z const wchar_t* wszError) {
 
 ////////////////////////////////////////////////////////////////////
 void Usage() {
-    wprintf(L"TokenDumper V0.2 - Michael Howard.\nCopyright (c) Microsoft Corp. All Rights Reserved.\n");
+	wprintf(L"TokenDumper " VERSION L" - Michael Howard.\nCopyright (c) Microsoft Corp. All Rights Reserved.\n");
     wprintf(L"Usage: TokenDumper [-p <pid>] [-l] [-h]\n");
     wprintf(L"\t-p <pid>\tProcess ID to dump token for\n");
     wprintf(L"\t-l\t\tList all processes\n");

@@ -1,5 +1,7 @@
 #pragma once
 
+#define VERSION	L"(v1.0)"
+
 #pragma strict_gs_check (  on )
 
 #ifndef _WIN32_WINNT		              
@@ -24,9 +26,7 @@ bool	IsLinkedToken(const HANDLE hToken, _Inout_ HANDLE* pLinkedToken);
 void    DumpUsernameAndSid(const HANDLE hToken);
 void    DumpGroups(const HANDLE hToken);
 void    DumpPrivs(const HANDLE hToken);
-void    DumpToken(const HANDLE hToken);
 void	DumpMisc(const HANDLE hToken);
-HANDLE  HandleLinkedToken(const HANDLE hToken);
 HANDLE	DumpLinkedToken(const HANDLE hToken);
 void    ShowSid(_In_ PSID psid, const DWORD attr);
 void	DumpProcesses();
@@ -34,5 +34,4 @@ void	GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout
 void	SetTextColor(WORD dwColor = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 bool	IsDangerousPriv(LPWSTR szPrivName);
 void	Usage();
-void	GetProcessNameFromPid(DWORD pid);
 void	DumpProcessName(DWORD pid);
