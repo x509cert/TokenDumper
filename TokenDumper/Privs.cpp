@@ -13,22 +13,26 @@ void DumpPrivs(const HANDLE hToken) {
     SetTextColor();
     wprintf(L"\nPRIVILEGES {n=%d}:\n", privileges->PrivilegeCount);
     for (DWORD i = 0; i < privileges->PrivilegeCount; ++i) {
-        LPWSTR privilegeName{};
         DWORD nameSize = 0;
         
         LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, NULL, &nameSize);
-        privilegeName = new TCHAR[nameSize];
+        LPWSTR wszPrivilegeName = reinterpret_cast<LPWSTR>(LocalAlloc(LPTR, 1 + (nameSize * sizeof(wchar_t))));
         
-        LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, privilegeName, &nameSize);
-		if (IsDangerousPriv(privilegeName))
+        LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, wszPrivilegeName, &nameSize);
+		if (IsDangerousPriv(wszPrivilegeName))
             SetTextColor(FOREGROUND_RED);
 		
-        wprintf(L"\t%s\n", privilegeName);
+        wprintf(L"\t%s\n", wszPrivilegeName);
 		
         SetTextColor();
         
-        delete[] privilegeName;
+        if (wszPrivilegeName) {
+            LocalFree(wszPrivilegeName);
+            wszPrivilegeName = nullptr;
+        }
     }
+
+    if (ppv) LocalFree(ppv);
 }
 
 bool IsDangerousPriv(LPWSTR szPrivName) {

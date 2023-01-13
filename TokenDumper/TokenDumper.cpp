@@ -6,6 +6,7 @@ void DumpToken(const HANDLE hToken, DWORD pid) {
     DumpUsernameAndSid(hToken);
     DumpGroups(hToken);
     DumpPrivs(hToken);
+    DumpMisc(hToken);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -49,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     }
 
     DumpToken(hToken, pid);
-    HANDLE hLinkedToken = HandleLinkedToken(hToken);
+    //HANDLE hLinkedToken = HandleLinkedToken(hToken);
     //if (hLinkedToken)             // we only care about the main token
     //    DumpToken(hLinkedToken);
 

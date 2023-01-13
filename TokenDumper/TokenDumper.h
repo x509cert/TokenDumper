@@ -3,7 +3,7 @@
 #pragma strict_gs_check (  on )
 
 #ifndef _WIN32_WINNT		              
-#define _WIN32_WINNT _WIN32_WINNT_WIN8	
+#define _WIN32_WINNT _WIN32_WINNT_WIN10
 #endif						
 
 #include <stdio.h>
@@ -25,7 +25,9 @@ void    DumpUsernameAndSid(const HANDLE hToken);
 void    DumpGroups(const HANDLE hToken);
 void    DumpPrivs(const HANDLE hToken);
 void    DumpToken(const HANDLE hToken);
+void	DumpMisc(const HANDLE hToken);
 HANDLE  HandleLinkedToken(const HANDLE hToken);
+HANDLE	DumpLinkedToken(const HANDLE hToken);
 void    ShowSid(_In_ PSID psid, const DWORD attr);
 void	DumpProcesses();
 void	GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout_* pcbSize, _Inout_ void** ppv);

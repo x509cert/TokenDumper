@@ -1,6 +1,29 @@
 #include "TokenDumper.h"
 
 ////////////////////////////////////////////////////////////////////
+// A worker function that allocates memory for various token fields
+// IMPORTANT
+// This function allocates memory which must be freed by the caller
+// if the function succeffully gets the token data. Use LocalFree()
+void GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout_* pcbSize, _Inout_ void** ppv) {
+	DWORD dwSize = 0;
+	*ppv = NULL;
+	GetTokenInformation(hToken, tic, NULL, 0, &dwSize);
+	if (dwSize > 0) {
+		*ppv = LocalAlloc(LPTR, dwSize);
+		if (*ppv) {
+			if (!GetTokenInformation(hToken, tic, *ppv, dwSize, &dwSize)) {
+				LocalFree(*ppv);
+				*ppv = nullptr;
+			}
+			else {
+				*pcbSize = dwSize;
+			}
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////////////
 void DumpGroups(const HANDLE hToken) {
 
 	TOKEN_GROUPS* ptg{};
@@ -17,38 +40,24 @@ void DumpGroups(const HANDLE hToken) {
 		}
 	}
 
-	if (ptg) free(ptg);
+	if (ptg) LocalFree(ptg);
 }
 
 ////////////////////////////////////////////////////////////////////
-// A Worker function that allocates memory for various token fields
-void GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout_ *pcbSize, _Inout_ void** ppv) {
-	DWORD dwSize = 0;
-	*ppv = NULL;
-	GetTokenInformation(hToken, tic, NULL, 0, &dwSize);
-	if (dwSize > 0) {
-		*ppv = malloc(dwSize);
-		if (*ppv) {
-			if (!GetTokenInformation(hToken, tic, *ppv, dwSize, &dwSize)) {
-				free(*ppv);
-				*ppv = NULL;
-			}
-			else {
-				*pcbSize = dwSize;
-			}
-		}
-	}
+void DumpMisc(const HANDLE hToken) {
+	DumpLinkedToken(hToken);
+	// add others
 }
 
 ////////////////////////////////////////////////////////////////////
-HANDLE HandleLinkedToken(const HANDLE hToken) {
+HANDLE DumpLinkedToken(const HANDLE hToken) {
 	HANDLE hLinkedToken{};
 	bool fLinked = false;
 	if (IsLinkedToken(hToken, &hLinkedToken)) {
-		wprintf(L"Linked:\tYes\n");
+		wprintf(L"\tLinked:\tYes\n");
 	}
 	else {
-		wprintf(L"Linked:\tNo\n");
+		wprintf(L"\tLinked:\tNo\n");
 	}
 
 	return hLinkedToken;
