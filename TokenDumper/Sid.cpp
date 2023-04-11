@@ -12,7 +12,7 @@ void DumpUsernameAndSid(const HANDLE hToken) {
     } else 
         ShowApiError(L"GetTokenInformation");
 
-    if (&ptu) LocalFree(&ptu);
+    if (ptu) LocalFree(ptu);
 }
 
 bool IsDangerousGroupOrLabel(_In_ PSID pSid, const DWORD attr) {

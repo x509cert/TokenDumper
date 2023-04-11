@@ -53,7 +53,7 @@ void DumpMisc(const HANDLE hToken) {
 HANDLE DumpLinkedToken(const HANDLE hToken) {
 	HANDLE hLinkedToken{};
 
-	wprintf(L"Linked:\t%s\n", IsLinkedToken(hToken, &hLinkedToken) ? L"Yes" : L"Nos");
+	wprintf(L"Linked:\t%s\n", IsLinkedToken(hToken, &hLinkedToken) ? L"Yes" : L"No");
 
 	return hLinkedToken;
 }
