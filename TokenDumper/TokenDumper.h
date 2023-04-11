@@ -20,6 +20,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <format>
+#include <iostream>
 
 void    ShowApiError(_In_z_ const wchar_t* wszError);
 bool	IsLinkedToken(const HANDLE hToken, _Inout_ HANDLE* pLinkedToken);

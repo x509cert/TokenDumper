@@ -19,9 +19,7 @@ void DumpProcesses() {
     SetTextColor();
     wprintf(L"PROCESSES:\n");
     do {
-        wchar_t wszProc[128];
-        swprintf_s(wszProc, _countof(wszProc), L"%s (%d)", pe.szExeFile, pe.th32ProcessID);
-		std::wstring strProcName = wszProc;
+        std::wstring strProcName(std::format(L"{} [{}]", pe.szExeFile, pe.th32ProcessID));
 		std::transform(strProcName.begin(), strProcName.end(), strProcName.begin(), ::tolower);
         vProcessNames.push_back(strProcName);
     } while (Process32Next(hSnapshot, &pe));
