@@ -2,7 +2,7 @@
 #include <cstring>
 #include <windows.h>
 
-BOOL SidToName(PSID pSid, LPWSTR& lpName, LPWSTR& lpDomain) {
+static BOOL SidToName(PSID pSid, LPWSTR& lpName, LPWSTR& lpDomain) {
 
     if (!pSid || !lpName || !lpDomain)
         return false;
@@ -24,7 +24,7 @@ BOOL SidToName(PSID pSid, LPWSTR& lpName, LPWSTR& lpDomain) {
     return FALSE;
 }
 
-PSID GetProcessSid(DWORD dwProcessId) {
+static PSID GetProcessSid(DWORD dwProcessId) {
     HANDLE hProcess = NULL;
     HANDLE hToken = NULL;
     PTOKEN_USER pTokenUser = NULL;

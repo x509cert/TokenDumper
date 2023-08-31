@@ -33,7 +33,7 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnunRestrictedThreads.cpp">
+    <ClCompile Include="EnumRestrictedThreads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

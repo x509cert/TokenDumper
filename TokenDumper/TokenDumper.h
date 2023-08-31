@@ -1,6 +1,6 @@
 #pragma once
 
-#define VERSION	L"(v2.0)"
+#define VERSION	L"(v2.1)"
 
 #pragma strict_gs_check (  on )
 
