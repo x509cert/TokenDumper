@@ -6,11 +6,13 @@ void DumpToken(const HANDLE hToken, DWORD pid) {
     DumpUsernameAndSid(hToken);
     DumpGroups(hToken);
     DumpPrivs(hToken);
-    DumpMisc(hToken);
+    DumpRestrictedThreadToken(pid);
 }
 
 ////////////////////////////////////////////////////////////////////
-int _tmain(int argc, _TCHAR* argv[]) {
+int wmain(int argc, wchar_t* argv[]) {
+
+    Banner();
 	
     int pid = 0;
 	
@@ -37,7 +39,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
         }
     }
 
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid == 0 ? GetCurrentProcessId(): pid);
+    // if no args, dump current process token, output should be similar to whoami /all
+    if (!pid)
+        pid = GetCurrentProcessId();
+
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid);
     if (hProcess == NULL) {
         ShowApiError(L"OpenProcess");
         return -1;
@@ -50,6 +56,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     }
 
     DumpToken(hToken, pid);
+
     //HANDLE hLinkedToken = HandleLinkedToken(hToken);
     //if (hLinkedToken)             // we only care about the main token
     //    DumpToken(hLinkedToken);

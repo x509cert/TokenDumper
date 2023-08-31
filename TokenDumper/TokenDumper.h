@@ -1,6 +1,6 @@
 #pragma once
 
-#define VERSION	L"(v1.0)"
+#define VERSION	L"(v2.0)"
 
 #pragma strict_gs_check (  on )
 
@@ -36,4 +36,6 @@ void	GetTokenInfo(const HANDLE hToken, TOKEN_INFORMATION_CLASS tic, DWORD _Inout
 void	SetTextColor(WORD dwColor = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 bool	IsDangerousPriv(LPWSTR szPrivName);
 void	Usage();
+void	Banner();
 void	DumpProcessName(DWORD pid);
+void	DumpRestrictedThreadToken(DWORD pid);
