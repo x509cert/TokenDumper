@@ -124,7 +124,7 @@ void DumpProcesses() {
     }
 
     if (unknownSids)
-        wprintf(L"\nSome unknown SIDs were found, they are probably Windows Protected Processes.\n");
+        wprintf(L"\nFound some unknown SIDs, they are probably Windows Protected Processes.\n");
 
     CloseHandle(hSnapshot);
 }
