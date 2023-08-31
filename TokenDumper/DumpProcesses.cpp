@@ -3,6 +3,10 @@
 #include <windows.h>
 
 BOOL SidToName(PSID pSid, LPWSTR& lpName, LPWSTR& lpDomain) {
+
+    if (!pSid || !lpName || !lpDomain)
+        return false;
+
     WCHAR szName[128] = { 0 };
     DWORD dwNameSize = _countof(szName);
 
