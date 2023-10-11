@@ -17,16 +17,17 @@ void DumpPrivs(const HANDLE hToken) {
         
         LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, NULL, &nameSize);
         LPWSTR wszPrivilegeName = reinterpret_cast<LPWSTR>(LocalAlloc(LPTR, 1 + (nameSize * sizeof(wchar_t))));
-        
-        LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, wszPrivilegeName, &nameSize);
-		if (IsDangerousPriv(wszPrivilegeName))
-            SetTextColor(FOREGROUND_RED);
-		
-        wprintf(L"\t%s\n", wszPrivilegeName);
-		
-        SetTextColor();
-        
+
         if (wszPrivilegeName) {
+
+            LookupPrivilegeName(NULL, &privileges->Privileges[i].Luid, wszPrivilegeName, &nameSize);
+            if (IsDangerousPriv(wszPrivilegeName))
+                SetTextColor(FOREGROUND_RED);
+
+            wprintf(L"\t%s\n", wszPrivilegeName);
+
+            SetTextColor();
+
             LocalFree(wszPrivilegeName);
             wszPrivilegeName = nullptr;
         }

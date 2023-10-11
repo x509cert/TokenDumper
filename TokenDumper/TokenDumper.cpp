@@ -39,9 +39,17 @@ int wmain(int argc, wchar_t* argv[]) {
         }
     }
 
+
     // if no args, dump current process token, output should be similar to whoami /all
-    if (!pid)
+    if (!pid) {
         pid = GetCurrentProcessId();
+    }
+    else {
+        // user must have debug priv to get process token of a another process
+        // technically, only for a process not running as the user, but we'll keep it simple for a moment!
+        if (!SetDebugPrivilege(TRUE))
+            return -1;
+    }
 
     HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid);
     if (hProcess == NULL) {

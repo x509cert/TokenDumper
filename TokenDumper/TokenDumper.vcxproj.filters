@@ -36,6 +36,9 @@
     <ClCompile Include="EnumRestrictedThreads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AssertDebugPriv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TokenDumper.h">

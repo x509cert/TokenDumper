@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssertDebugPriv.cpp" />
     <ClCompile Include="DumpProcesses.cpp" />
     <ClCompile Include="EnumRestrictedThreads.cpp" />
     <ClCompile Include="Privs.cpp" />

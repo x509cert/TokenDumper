@@ -1,6 +1,6 @@
 #pragma once
 
-#define VERSION	L"(v2.1)"
+#define VERSION	L"(v2.2)"
 
 #pragma strict_gs_check (  on )
 
@@ -39,3 +39,4 @@ void	Usage();
 void	Banner();
 void	DumpProcessName(DWORD pid);
 void	DumpRestrictedThreadToken(DWORD pid);
+BOOL	SetDebugPrivilege(BOOL Enable);
